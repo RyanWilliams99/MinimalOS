@@ -85,19 +85,29 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
 }
 
 void terminal_putchar(char c) {
-  terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
-  if (++terminal_column == VGA_WIDTH) {
-    terminal_column = 0;
-    if (++terminal_row == VGA_HEIGHT) {
-      terminal_row = 0;
+    if(c == 10)
+    {
+        terminal_row = terminal_row + 1;
+        terminal_column = 0;
     }
-  }
+    else
+    {
+        terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
+        if (++terminal_column == VGA_WIDTH) {
+            terminal_column = 0;
+            if (++terminal_row == VGA_HEIGHT) {
+                terminal_row = 0;
+            }
+        }
+    }
 }
  
 void terminal_writestring(const char* data) {
   size_t datalen = strlen(data);
-  for (size_t i = 0; i < datalen; i++)
-    terminal_putchar(data[i]);
+  for (size_t i = 0; i < datalen; i++){
+      terminal_putchar(data[i]);
+  }
+
 }
 
 #if defined(__cplusplus)
@@ -111,5 +121,39 @@ void kernel_main() {
    * yet, '\n' will produce some VGA specific character instead.
    * This is normal.
    */
-  terminal_writestring("Hello, kernel World!\n");
+    terminal_setcolor(COLOR_RED);
+    terminal_writestring("Hello00, kernel World!\n");
+    terminal_setcolor(COLOR_WHITE);
+    terminal_writestring("Hello01, kernel World!\n");
+    terminal_writestring("Hello02, kernel World!\n");
+    terminal_writestring("Hello03, kernel World!\n");
+    terminal_writestring("Hello04, kernel World!\n");
+    terminal_writestring("Hello05, kernel World!\n");
+    terminal_writestring("Hello06, kernel World!\n");
+    terminal_setcolor(COLOR_BLUE);
+    terminal_writestring("Hello07, kernel World!\n");
+    terminal_writestring("Hello08, kernel World!\n");
+    terminal_writestring("Hello09, kernel World!\n");
+    terminal_writestring("Hello10, kernel World!\n");
+    terminal_writestring("Hello11, kernel World!\n");
+    terminal_writestring("Hello12, kernel World!\n");
+    terminal_writestring("Hello13, kernel World!\n");
+    terminal_writestring("Hello14, kernel World!\n");
+    terminal_writestring("Hello15, kernel World!\n");
+    terminal_writestring("Hello16, kernel World!\n");
+    terminal_writestring("Hello17, kernel World!\n");
+    terminal_writestring("Hello18, kernel World!\n");
+    terminal_writestring("Hello19, kernel World!\n");
+    terminal_writestring("Hello20, kernel World!\n");
+    terminal_writestring("Hello21, kernel World!\n");
+    terminal_writestring("Hello22, kernel World!\n");
+    terminal_writestring("Hello23, kernel World!\n");
+    terminal_writestring("Hello24, kernel World!\n");
+    terminal_setcolor(COLOR_GREEN);
+    terminal_writestring("Hello25, kernel World!\n");
+    terminal_writestring("Hello26, kernel World!\n");
+    terminal_writestring("Hello27, kernel World!\n");
+    terminal_writestring("Hello28, kernel World!\n");
+    terminal_writestring("Hello29, kernel World!\n");
+
 }
