@@ -86,12 +86,12 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
 
 void terminal_putchar(char c) {
 
-    if ((c == 10) && (terminal_row + 1 != VGA_HEIGHT))
+    if (c == 10) //if character is the ascii value for newline which is decimal 10
     {
-        terminal_row++;
-        terminal_column = 0;
+        terminal_row++; //go to the next row
+        terminal_column = 0; //go to the far left coloum as we read left to right
     }
-    else
+    else //Otherwise put char as normal
     {
         terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
         if (++terminal_column == VGA_WIDTH) {
@@ -103,30 +103,30 @@ void terminal_putchar(char c) {
     }
 }
 
-char prints[100][80];
-int numberOfPrintsStored = 0;
+char prints[100][80]; //char array storing everything that has been passed to the writestring function
+int numberOfPrintsStored = 0; //int storing the number of prints passed to writestring
 
 void terminal_writestring(const char* data) {
 
     size_t datalen = strlen(data);
-    for (size_t i = 0; i < datalen; i++)
+    for (size_t i = 0; i < datalen; i++) //For every element in the char array passed to this function
     {
-        prints[numberOfPrintsStored][i] = data[i];
+        prints[numberOfPrintsStored][i] = data[i]; //Store it into 2D array for later use
     }
 
     numberOfPrintsStored++;
-    if (numberOfPrintsStored == 30)
+    if (numberOfPrintsStored > VGA_HEIGHT - 2) //If the number of prints stored is more than the height of the terminal
     {
-        for (int i = numberOfPrintsStored - 24; i < numberOfPrintsStored; i++)
+        terminal_column = 0; //Reset values to start at the the top of terminal
+        terminal_row = 0;
+        for (int i = numberOfPrintsStored - 24; i < numberOfPrintsStored; i++) //Reprint the last 24 lines char by char
         {
             for (int j = 0; j < 23; j++)
             {
                 terminal_putchar(prints[i][j]);
             }
         }
-
     }
-
 }
 
 #if defined(__cplusplus)
@@ -135,12 +135,6 @@ extern "C" /* Use C linkage for kernel_main. */
 void kernel_main() {
     /* Initialize terminal interface */
     terminal_initialize();
-
-    /* Since there is no support for newlines in terminal_putchar
-     * yet, '\n' will produce some VGA specific character instead.
-     * This is normal.
-     */
-
 
     terminal_setcolor(COLOR_RED);
     terminal_writestring("Hello00, kernel World!\n");
@@ -176,5 +170,4 @@ void kernel_main() {
     terminal_writestring("Hello27, kernel World!\n");
     terminal_writestring("Hello28, kernel World!\n");
     terminal_writestring("Hello29, kernel World!\n");
-
 }
